@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>markkit NodePath test</title>
+    <link rel="stylesheet" type="text/css" href="../css/jsUnitStyle.css">
+    <script language="JavaScript" type="text/javascript" src="../app/jsUnitCore.js"></script>
+	<script language="JavaScript" type="text/javascript" src="../../../markkit/markkit.js"></script>
+    <script language="JavaScript" type="text/javascript">
+		
+		function setUp() {
+			
+			b = document.createElement('body');
+			p = document.createElement('p');
+			e1 = document.createElement('b');
+			e2 = document.createElement('b');
+			
+			b.appendChild(p);
+			p.appendChild(e1);
+			p.appendChild(e2);
+			
+			np1 = new NodePath(b);
+			np1.addChild(1);
+			np1.addChild(3);
+			np1.addChild(5);
+			np2 = new NodePath(b);
+			np2.addChild(1);
+			np2.addChild(3);
+			np2.addChild(5);
+			np3 = new NodePath(b);
+			np3.addParent(5);
+			np3.addParent(3);
+			np3.addParent(1);
+			
+			rl1 = new RangeLocation;
+			rl2 = new RangeLocation;
+		}
+		
+		function testSetStartNodePath() {
+			var np;
+			
+			rl1.startNodePath=np1;
+			np = rl1.startNodePath;
+			
+			assertEquals(np1, np);
+		}
+		
+		function testEq() {
+			var np, rl;
+			
+			rl1.startNodePath=np1;
+			rl1.endNodePath=np2;
+			rl1.startOffset=5;
+			rl1.endOffset=8;
+			rl2.startNodePath=np1;
+			rl2.endNodePath=np2;
+			rl2.startOffset=5;
+			rl2.endOffset=8;
+			
+			info("rl1", rl1);
+			info("rl2", rl2);
+			assertTrue("premier sens", rl1.eq(rl2));
+			assertTrue("sens contraire", rl2.eq(rl1));
+			
+			np = new NodePath;
+			np.addChild(1);
+			np.addChild(3);
+			np.addChild(5);
+			np.addChild(4);
+			info("np", np);
+			info("np1", np1);
+			rl = new RangeLocation; //same as rl1
+			rl.endNodePath=rl1.endNodePath;
+			rl.endOffset=rl1.endOffset;
+			rl.startNodePath=np;
+			rl.startOffset=0;
+			info("rl", rl);
+			
+			assertTrue("proprietes differentes", rl.eq(rl1));
+			assertFalse("RL flambant neuf", rl1.eq(new RangeLocation));
+			assertTrue("pour etre sur", rl.eq(rl2));
+		}
+		
+   </script>
+</head>
+
+<body>
+<h1 id="c1">selectclick NodePath tests</h1>
+
+<p>Cette page contient des tests unitaires pour la classe NodePath de selectclick</p>
+</body>
+</html>

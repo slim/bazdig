@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>markkit MarkServer tests</title>
+    <link rel="stylesheet" type="text/css" href="../css/jsUnitStyle.css">
+	<script>
+			MARKKIT = { me: "testuser" };
+	</script>
+	<script language="JavaScript" type="text/javascript" src="../../../markkit/prototype.js"></script>
+    <script language="JavaScript" type="text/javascript" src="../app/jsUnitCore.js"></script>
+	<script language="JavaScript" type="text/javascript" src="../../../markkit/markkit.js"></script>
+    <script language="JavaScript" type="text/javascript">
+		
+		function setUp() {
+			
+			b = document.createElement('span');
+			p = document.createElement('p');
+			e1 = document.createElement('b');
+			e2 = document.createElement('b');
+			
+			document.body.appendChild(b);
+			b.appendChild(p);
+			p.appendChild(e1);
+			p.appendChild(e2);
+			
+			info("document sibling #"+ document.siblingNumber());
+			info("body sibling #"+ document.body.siblingNumber());
+			info("b sibling #"+ b.siblingNumber());
+			info("p sibling #"+ p.siblingNumber());
+			info("e1 sibling #"+ e1.siblingNumber());
+			info("e2 sibling #"+ e2.siblingNumber());
+			debug("b", b.getNodePath(document));
+			debug("p", p.getNodePath(document));
+			debug("e1", e1.getNodePath(document));
+			debug("e2", e2.getNodePath(document));
+			
+			np1 = new NodePath(document);
+			np1.addChild(1);
+			np1.addChild(1);
+			np1.addChild(3);
+			np1.addChild(0);
+			np1.addChild(0);
+			debug("np1", np1);
+			np2 = new NodePath(document);
+			np2.addChild(1);
+			np2.addChild(1);
+			np2.addChild(3);
+			np2.addChild(0);
+			np2.addChild(1);
+			debug("np2", np2);
+			
+			rl1 = new Mark;
+			rl1.startNodePath=np1;
+			rl1.endNodePath=np2;
+			rl1.startOffset=0;
+			rl1.endOffset=0;
+			
+			range = document.createRange();
+			range.setMark(rl1);
+			m1 = new Mark(range);
+			m1.pageUrl = "http://localhost/test";
+			m1.owner = "testuser";
+
+			TESTROOT = "http://192.168.0.40/teh/waraq/test/";
+			server = new MarkServer(TESTROOT+"logger.php",TESTROOT+"marks.json");
+		}
+		
+		function testSaveMark() {
+			info("range", range.getMark(document));
+			info("rl1", rl1);
+			info("m1", m1);
+			server.saveMark(m1);
+		}
+		
+		function testLoadMarks() {
+			server.loadMarks();
+			marks = MarkServer.marks;
+			warn("marks", marks);
+		}
+   </script>
+</head>
+<body>
+<p>Cette page contient des tests unitaires pour la classe MarkServer de markkit</p>
+</body>
+</html>

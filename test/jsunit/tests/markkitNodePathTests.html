@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>markkit NodePath test</title>
+    <link rel="stylesheet" type="text/css" href="../css/jsUnitStyle.css">
+    <script language="JavaScript" type="text/javascript" src="../app/jsUnitCore.js"></script>
+	<script language="JavaScript" type="text/javascript" src="../../../markkit/markkit.js"></script>
+    <script language="JavaScript" type="text/javascript">
+		
+		function setUp() {
+			b = document.createElement('span');
+			np = new NodePath(b);
+			p = document.createElement('p');
+			b.appendChild(p);
+			e1 = document.createElement('b');
+			p.appendChild(e1);
+			e2 = document.createElement('b');
+			p.appendChild(e2);
+			e3 = document.createElement('b');
+			p.appendChild(e3);
+		}
+
+		function testAddChild() {
+			np.addChild(1);
+			np.addChild(3);
+			np.addChild(5);
+			assertEquals( "nombre d'entrees", 3, np.getNumbers().length );
+			assertEquals( "premier", 1, np.getNumbers()[0] );
+			assertEquals( "deuxieme", 3, np.getNumbers()[1] );
+			assertEquals( "troisieme", 5, np.getNumbers()[2] );
+		}
+		
+		function testAddParent() {
+			np.addParent(1);
+			np.addParent(3);
+			np.addParent(5);
+			assertEquals( "nombre d'entrees", 3, np.getNumbers().length );
+			assertEquals( "premier", 5, np.getNumbers()[0] );
+			assertEquals( "deuxieme", 3, np.getNumbers()[1] );
+			assertEquals( "troisieme", 1, np.getNumbers()[2] );
+		}
+		
+		function testGetNode() {
+			np.addChild(0);
+			assertEquals("premier", p, np.getNode());
+			debug("nodepath", np);
+			np.addChild(2);
+			debug("nodepath", np);
+			assertEquals("deuxieme", e3, np.getNode());
+		}
+		
+		function testEq() {
+			np1 = new NodePath(b);
+			np1.addChild(1);
+			np1.addChild(3);
+			np1.addChild(5);
+			np2 = new NodePath(b);
+			np2.addChild(1);
+			np2.addChild(3);
+			np2.addChild(5);
+			np3 = new NodePath(b);
+			np3.addParent(5);
+			np3.addParent(3);
+			np3.addParent(1);
+			
+			assertTrue(np1.eq(np2));
+			assertTrue(np2.eq(np1));
+			assertTrue(np3.eq(np1));
+		}
+		
+		function testLength() {
+			np.addParent(1);
+			np.addParent(3);
+			np.addChild(5);
+			
+			assertEquals(3, np.length());
+		}
+		
+		function testLast() {
+			np.addParent(1);
+			np.addParent(3);
+			np.addChild(5);
+			
+			assertEquals(5, np.last());
+		}
+		function testSetNumbers()
+		{
+			np1 = new NodePath(b);
+			np1.addChild(1);
+			np1.addChild(3);
+			np1.addChild(5);
+			np.setNumbers([1, 3, 5]);
+
+			assertTrue(np1.eq(np));
+		}
+   </script>
+</head>
+
+<body>
+<h1 id="c1">selectclick NodePath tests</h1>
+
+<p>Cette page contient des tests unitaires pour la classe NodePath de selectclick</p>
+</body>
+</html>

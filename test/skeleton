@@ -1,0 +1,7 @@
+#!/usr/bin/php
+<?php
+	require_once "PHPUnit/Skeleton.php";
+
+	$ps = new PHPUnit_Skeleton($argv[1], $argv[2]);
+	$ps->createTestClass();
+	$ps->writeTestClass();

@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>markkit Element extensions test</title>
+    <link rel="stylesheet" type="text/css" href="../css/jsUnitStyle.css">
+    <script language="JavaScript" type="text/javascript" src="../app/jsUnitCore.js"></script>
+	<script language="JavaScript" type="text/javascript" src="../../../markkit/markkit.js"></script>
+    <script language="JavaScript" type="text/javascript">
+		
+		function setUp() {
+			b = document.createElement('span');
+			p = document.createElement('p');
+			e1 = document.createElement('b');
+			e2 = document.createElement('b');
+			e3 = document.getElementById('e3');
+			e4 = document.getElementById('e4');
+			e5 = document.createElement('p');
+			e6 = document.createElement('i');
+			
+			b.appendChild(p);
+			b.appendChild(e5);
+			p.appendChild(e1);
+			p.appendChild(e2);
+			p.appendChild(e6);
+			
+			debug("b sibling #" + b.siblingNumber());
+			debug("p sibling #" + p.siblingNumber());
+			debug("e1 sibling #" + e1.siblingNumber());
+			debug("e2 sibling #" + e2.siblingNumber());
+			info("e3 sibling #" + e3.siblingNumber());
+			info("e4 sibling #" + e4.siblingNumber());
+			debug("e5 sibling #" + e5.siblingNumber());
+			debug("e6 sibling #" + e6.siblingNumber());
+			
+			np1 = e3.getNodePath(document);
+			info("np1", np1);
+			np2 = e4.getNodePath(document);
+			info("np2", np2);
+			
+			r1 = document.createRange();
+			r1.setStart(e3,0);
+			r1.setEnd(e4,0);
+			
+			rl1 = new Mark;
+			rl1.startNodePath=np1;
+			rl1.endNodePath=np2;
+			rl1.startOffset=0;
+			rl1.endOffset=0;
+			rl2 = new Mark;
+			rl2.startNodePath=np1;
+			rl2.endNodePath=np2;
+			rl2.startOffset=0;
+			rl2.endOffset=0;
+		}
+		
+		function testRangeGetLocation() {
+			var location = r1.getMark(document);
+			
+			assertTrue("root defaults to document", r1.getMark(document).eq(r1.getMark()));
+			assertEquals("startOffset", 0, location.startOffset);
+			assertEquals("endOffset", 0, location.endOffset);
+			assertTrue("startNodePath", np1.eq(location.startNodePath));
+			assertTrue("endNodePath", np2.eq(location.endNodePath));
+		}
+		
+		function testRangeSetLocation() {
+			var location = r1.getMark(document),
+				range = document.createRange();
+			
+			console.log(location);
+			range.setMark(location);
+			assertTrue(location.eq(range.getMark(document)));
+			console.log(rl1);
+			range.setMark(rl1);
+			assertTrue(rl1.eq(range.getMark(document)));
+		}
+   </script>
+</head>
+
+<body>
+<h1>selectclick Element extension methods tests</h1>
+
+<p>Cette page contient des tests unitaires pour les extensions de prototype des Elements de selectclick</p>
+<p>test</p>
+<p id="e3">paragraphe de <i id="e4">test</i></p>
+</body>
+</html>

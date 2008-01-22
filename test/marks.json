@@ -1,0 +1,7 @@
+[{ pageUrl: "http://localhost/test",
+   linkUrl: "http://localhost/test",
+   owner: "testuser",
+   startNodePath: [1,1,3,0,0],
+   startOffset: 0,
+   endNodePath: [1,1,3,0,1],
+   endOffset: 0 }]
