@@ -12,10 +12,17 @@ class SqlCodeTest extends UnitTestCase {
 		$this->md5 = md5($this->query);
 		$this->sqlCode = new SqlCode($this->query);
 		$this->db =& new PDO("sqlite:bazdig-test.db");
+		SqlCode::set_db($this->db);
+		$this->sqlCode2 = new SqlCode("select * from test");
+		$this->sqlCode2->id = 'test:001';
+		$this->sqlCode2->date = '2008-01-25';
     }
 
     function tearDown()
     {
+		$tableName = SqlCode::get_table_name();
+		$id = $this->sqlCode->id;
+		$this->db->exec("delete from $tableName where id='$id'");
     }
 
     function testtoSQLinsert()
@@ -52,24 +59,26 @@ class SqlCodeTest extends UnitTestCase {
 
     function testselect()
     {
+		$result = SqlCode::select(" where id='test:001'");
+		$expected = array($this->sqlCode2);
+        $this->assertEqual($expected, $result);
     }
-
-	function testcount()
-	{
-	}
 
     function testsave()
     {
+		$this->sqlCode->save();
+		$md5 = $this->sqlCode->id;
+		$result = $this->db->query("select code from sql where id='$md5'");
+		$result = $result->fetch();
+		$expected = "select * from test";
+        $this->assertEqual($expected, $result['code']);
+		$this->sqlCode->save();
+		$result = $this->db->query("select * from sql where id='$md5'");
+		$result = $result->fetchAll();
+		$expected = 1;
+        $this->assertEqual($expected, count($result));
     }
 
-    function testload()
-    {
-    }
-
-    function testset_db()
-    {
-    }
-	
 }
 // Running the test.
 $test =& new SqlCodeTest;
