@@ -93,4 +93,18 @@
 			}
 			return $this;
 		}
+
+		static function search($string, $options = NULL)
+		{
+			$options = str_replace("where", "and", $options);
+			$scripts = self::select("where code like '%$string%' $options");
+			return $scripts;
+		}
+
+		function exec($db)
+		{
+			$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			$result = $db->query($this->code);
+			return $result->fetchAll();
+		}
 	}

@@ -16,6 +16,7 @@ class SqlCodeTest extends UnitTestCase {
 		$this->sqlCode2 = new SqlCode("select * from test");
 		$this->sqlCode2->id = 'test:001';
 		$this->sqlCode2->date = '2008-01-25';
+		$this->markkitDB =& new PDO("sqlite2:markkit-test.db");
     }
 
     function tearDown()
@@ -25,7 +26,34 @@ class SqlCodeTest extends UnitTestCase {
 		$this->db->exec("delete from $tableName where id='$id'");
     }
 
-    function testtoSQLinsert()
+	function test_search()
+	{
+		$result = SqlCode::search("test");
+		$expected = 2;
+        $this->assertEqual($expected, count($result));
+		$expected = $this->sqlCode2;
+		$this->assertTrue($expected == $result[0] || $expected == $result[1]);
+		$result = SqlCode::search("test", "limit 1");
+		$expected = 1;
+        $this->assertEqual($expected, count($result));
+		$result = SqlCode::search("test", "where id='test:005'");
+		$expected = 1;
+        $this->assertEqual($expected, count($result));
+	}
+
+	function test_exec()
+	{
+		$markkitQuery1 = new SqlCode("select * from marks where id='testid'");
+		$result = $markkitQuery1->exec($this->markkitDB);
+		$expected = 'testuser';
+        $this->assertEqual($expected, $result[0]['owner']);
+		$markkitQuery2 = new SqlCode("select * from marks where id='testid4'");
+		$result = $markkitQuery2->exec($this->markkitDB);
+		$expected = 'http://localhost/test/x';
+        $this->assertEqual($expected, $result[0]['pageUrl']);
+	}
+
+    function test_toSQLinsert()
     {
         $result   = $this->sqlCode->toSQLinsert();
         $expected = "/insert/i";
@@ -34,7 +62,7 @@ class SqlCodeTest extends UnitTestCase {
         $this->assertWantedPattern($expected, $result);
     }
 
-    function testtoSQLselect()
+    function test_toSQLselect()
     {
         $result   = $this->sqlCode->toSQLselect();
         $expected = "/select/i";
@@ -43,7 +71,7 @@ class SqlCodeTest extends UnitTestCase {
         $this->assertWantedPattern($expected, $result);
     }
 
-    function testsql_select()
+    function test_sql_select()
     {
 		$options = " where code like 'select %'";
         $result   = SqlCode::sql_select($options);
@@ -57,14 +85,14 @@ class SqlCodeTest extends UnitTestCase {
         $this->assertWantedPattern($expected, $result);
     }
 
-    function testselect()
+    function test_select()
     {
 		$result = SqlCode::select(" where id='test:001'");
 		$expected = array($this->sqlCode2);
         $this->assertEqual($expected, $result);
     }
 
-    function testsave()
+    function test_save()
     {
 		$this->sqlCode->save();
 		$md5 = $this->sqlCode->id;

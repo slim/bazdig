@@ -4,17 +4,13 @@
 <script src="../codepress/codepress.js" type="text/javascript"></script>
 </head>
 <body>
-<a href="../history/">history</a>
-<form method="get" action="../sql/" >
-<textarea id="q" name="q" class="codepress sql linenumbers-off" style="width:700px;height:350px;" wrap="off">
+<form method="get" action="../sql/exec/" target="_new">
+<textarea id="input" name="input" class="codepress sql linenumbers-off" style="width:700px;height:350px;" wrap="off" tabindex="1">
+<?php echo $_GET['q']; ?>
 </textarea>
-<button accesskey="g" title="SHIFT-ALT-g" onclick="q.toggleEditor(); submit()">Execute</button>
-<p>
-<label>test = <input id="test" name="test" type="text" onfocus="this.style.background='yellow'"  /></label>
-</p>
-<p>
-<label>test2 <input id="test2" name="test2" type="text" /></label>
-</p>
+<input type="hidden" name="q" id="q"/>
+<button accesskey="g" title="SHIFT-ALT-g" onclick="q.value=input.getCode(); submit();">OK</button>
 </form>
+<p><a href="../history/">history</a> | <a href="../db/">database</a> | <a href="../bazdig.db">save</a></p>
 </body>
 </html>
