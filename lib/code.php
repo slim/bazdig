@@ -105,6 +105,6 @@
 		{
 			$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			$result = $db->query($this->code);
-			return $result->fetchAll();
+			return $result;
 		}
 	}

@@ -44,13 +44,17 @@ class SqlCodeTest extends UnitTestCase {
 	function test_exec()
 	{
 		$markkitQuery1 = new SqlCode("select * from marks where id='testid'");
-		$result = $markkitQuery1->exec($this->markkitDB);
+		$result = $markkitQuery1->exec($this->markkitDB)->fetchAll();
 		$expected = 'testuser';
         $this->assertEqual($expected, $result[0]['owner']);
 		$markkitQuery2 = new SqlCode("select * from marks where id='testid4'");
-		$result = $markkitQuery2->exec($this->markkitDB);
+		$result = $markkitQuery2->exec($this->markkitDB)->fetchAll();
 		$expected = 'http://localhost/test/x';
         $this->assertEqual($expected, $result[0]['pageUrl']);
+		$markkitQuery3 = new SqlCode("select * from marks where pageUrl like '%x'");
+		$result = $markkitQuery3->exec($this->markkitDB)->fetchAll();
+		$expected = 'http://localhost/test/x';
+        $this->assertEqual($expected, $result[1]['pageUrl']);
 	}
 
     function test_toSQLinsert()
