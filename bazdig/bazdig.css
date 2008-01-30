@@ -1,0 +1,5 @@
+.button { border: 1px outset silver ; padding: 5px 10px; color: black; background-color: lightgrey; text-decoration:none}
+.query { display: block; padding: 10px; text-decoration: none; color: black }
+a:hover.query { background-color: yellow }
+#ok { width: 100%; }
+#browser { width: 30%; padding: 10px; vertical-align: top}

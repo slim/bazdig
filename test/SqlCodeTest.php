@@ -17,12 +17,15 @@ class SqlCodeTest extends UnitTestCase {
 		$this->sqlCode2->id = 'test:001';
 		$this->sqlCode2->date = '2008-01-25';
 		$this->markkitDB =& new PDO("sqlite2:markkit-test.db");
+		$this->markkitQuery3 = new SqlCode("select * from marks where pageUrl like '%x'");
     }
 
     function tearDown()
     {
 		$tableName = SqlCode::get_table_name();
 		$id = $this->sqlCode->id;
+		$this->db->exec("delete from $tableName where id='$id'");
+		$id = $this->markkitQuery3->id;
 		$this->db->exec("delete from $tableName where id='$id'");
     }
 
@@ -51,8 +54,7 @@ class SqlCodeTest extends UnitTestCase {
 		$result = $markkitQuery2->exec($this->markkitDB)->fetchAll();
 		$expected = 'http://localhost/test/x';
         $this->assertEqual($expected, $result[0]['pageUrl']);
-		$markkitQuery3 = new SqlCode("select * from marks where pageUrl like '%x'");
-		$result = $markkitQuery3->exec($this->markkitDB)->fetchAll();
+		$result = $this->markkitQuery3->exec($this->markkitDB)->fetchAll();
 		$expected = 'http://localhost/test/x';
         $this->assertEqual($expected, $result[1]['pageUrl']);
 	}
@@ -101,14 +103,29 @@ class SqlCodeTest extends UnitTestCase {
 		$this->sqlCode->save();
 		$md5 = $this->sqlCode->id;
 		$result = $this->db->query("select code from sql where id='$md5'");
-		$result = $result->fetch();
-		$expected = "select * from test";
-        $this->assertEqual($expected, $result['code']);
-		$this->sqlCode->save();
-		$result = $this->db->query("select * from sql where id='$md5'");
-		$result = $result->fetchAll();
+		$rows = $result->fetchAll(PDO::FETCH_ASSOC);
+		$count = count($rows);
 		$expected = 1;
-        $this->assertEqual($expected, count($result));
+        $this->assertEqual($expected, $count);
+		$expected = "select * from test";
+        $this->assertEqual($expected, $rows[0]['code']);
+		$this->sqlCode->save(); // save a second time
+		$result = $this->db->query("select * from sql where id='$md5'");
+		$rows = $result->fetchAll(PDO::FETCH_ASSOC);
+		$count = count($rows);
+		$expected = 1;
+        $this->assertEqual($expected, $count);
+		$this->markkitQuery3->save();
+		$id = $this->markkitQuery3->id;
+		$result = $this->db->query("select * from sql where id='$id'");
+		$rows = $result->fetchAll(PDO::FETCH_ASSOC);
+		$count = count($rows);
+		$expected = 1;
+        $this->assertEqual($expected, $count);
+		$expected = "/'%x'/";
+        $this->assertWantedPattern($expected, $rows[0]['code']);
+		$expected = $id;
+        $this->assertEqual($expected, $rows[0]['id']);
     }
 
 }

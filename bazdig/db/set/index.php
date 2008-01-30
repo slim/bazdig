@@ -1,4 +1,5 @@
 <?php
+	session_set_cookie_params(60*60*24*365);
 	session_start();
 
     define('WARAQ_ROOT', '../../..');

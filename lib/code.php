@@ -40,7 +40,7 @@
 		{
 			$table = $this->get_table_name();
 			$id    = $this->id;
-			$code  = $this->code;
+			$code  = str_replace("'", "''",$this->code);
 			$date  = $this->date;
 			$query = "insert into $table (id, code, date) values ('$id', '$code', '$date')";
 			return $query;
@@ -89,6 +89,8 @@
 				if ($db->errorCode() == "23000") { // l'id existe dans la table
 					$db->exec("delete from $table where id='$id'");
 					$db->exec($query);
+				} else {
+					die($e->getMessage());
 				}
 			}
 			return $this;

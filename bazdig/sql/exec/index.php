@@ -22,7 +22,8 @@
 	}
 
 	$query->save();
-	$columns = columnNames($result);
+	$rows = $result->fetchAll(PDO::FETCH_ASSOC);
+	$columns = columnNames($rows[0]);
 ?>
 <html>
 <head>
@@ -40,7 +41,6 @@
 		echo "<th>$c</th>";
 	}
 	echo "</tr>";
-	$rows = $result->fetchAll(PDO::FETCH_NUM);
 	foreach ($rows as $r) {
 		echo "<tr>";
 		foreach ($r as $value) {

@@ -2,85 +2,62 @@
 	define('WARAQ_ROOT', '..');
 	require_once WARAQ_ROOT .'/ini.php';
 
-	require_once "DB.php";
-
-	class Query
+	class BDB extends PDO
 	{
-		var $string;
-		var $tables;
-		var $conditions;
-		var $data;
-
-		function Query()
+		function listTables()
 		{
-		}
-
-		function db($dsn)
-		{
-			static $db;
-
-			$db = DB::Connect($dsn); 
-			$this->data = $db->getAll($this->string);
-		}
-
-		function select()
-		{
-			$this->string = "select";
-		}
-
-		function from($tables)
-		{
-			$this->tables = $tables;
-			$this->string .= " ". implode(',', $tables) ." ";
-		}
-
-		function where($conditions)
-		{
-			$this->conditions = $conditions;
-			foreach ($conditions as $column => $value) {
+			$dbType = $this->getAttribute(PDO::ATTR_DRIVER_NAME);
+			if ('sqlite' == $dbType || 'sqlite2' == $dbType) {
+				$query = "select name from sqlite_master where type='table'";
+			} else {
+				$query = "show tables";
 			}
+			$result = $this->query($query);
+			$tables = array();
+			foreach ($result as $r) {
+				$tables []= new Table($r['name']);
+			}
+
+			return $tables;
 		}
 	}
 
-	class DataBase extends DB
+	class Table
 	{
-		var $db;
+		var $name;
+		var $columns;
 
-		function DataBase($dsn)
+		function __construct($name, $columns = array())
 		{
-			$this->db = DB::Connect($dsn);
+			$this->name = $name;
+			$this->columns = $columns;
 		}
 
-		function insert($table, $data)
+		function loadColumns($db)
 		{
-			$query = "insert $table set ". DataBase::serialize_data($data);
-			return $this->query($query);
-		}
-
-		function select($data)
-		{
-			$tables = DataBase::extract_tables($data);
-			$query  = "select * from ". implode(',', $tables);
-			$query .= " where ". DataBase::serialize_data($data, 'and');
-			return $this->query($query);
-		}
-
-		function serialize_data($data, $separator = ',')
-		{
-			$tuples = array();
-			foreach ($data as $key => $value) {
-				$tuples[] = " $key='$value' ";
+			$table = $this->name;
+			$dbType = $db->getAttribute(PDO::ATTR_DRIVER_NAME);
+			if ('sqlite' == $dbType || 'sqlite2' == $dbType) {
+				$result = $db->fetchColumnTypes($table);
+				foreach ($result as $column => $type) {
+					$this->columns []= new Column($column, $type);
+				}
+			} else {
+				$columns = $db->query("show columns from $table");
 			}
-			return implode(" $separator ", $tuples);
+			
 		}
+	}
 
-		function extract_tables($data)
+
+	class Column
+	{
+		var $name;
+		var $type;
+
+		function __construct($name, $type = NULL)
 		{
-			$tables = array();
-			foreach (array_keys($data) as $column) {
-				list($tableName, $columnName) = split('.', $column);
-				$tables[] = $tableName;
-			}
-			return $tables;
+			$this->name = $name;
+			$this->type = $type;
 		}
 	}
