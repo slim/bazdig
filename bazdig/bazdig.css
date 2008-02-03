@@ -1,5 +1,74 @@
-.button { border: 1px outset silver ; padding: 5px 10px; color: black; background-color: lightgrey; text-decoration:none}
-.query { display: block; padding: 10px; text-decoration: none; color: black }
-a:hover.query { background-color: yellow }
-#ok { width: 100%; }
-#browser { width: 30%; padding: 10px; vertical-align: top}
+body {
+	font: 1em Verdana, Arial, sans-serif;
+	background-color: #FFFFFF;
+	color: #000000;
+	margin: 1em 0 0 1em;
+}
+#nav a { 
+	border: 1px outset silver ; 
+	padding: 5px 10px; 
+	color: black; 
+	background-color: lightgrey; 
+	text-decoration:none
+}
+#settings { 
+	text-align: right;
+	padding: 10px;
+	width: 400px;
+}
+#settings label {
+	display: block;
+}
+#settings * input:focus { 
+	background: yellow;
+}
+#queries a { 
+	display: block; 
+	padding: 10px; 
+	text-decoration: none; 
+	color: black 
+}
+#queries a:hover { 
+	background-color: yellow; 
+}
+#ok { 
+	display: block; 
+	clear:both; 
+	width: 100% 
+}
+table tr td { 
+	vertical-align: top; 
+}
+#console {
+	float: left;
+	width: 70%
+}
+#schema ul { 
+	list-style-type: none;
+	margin: 0;
+	padding: 0; 
+}
+#schema * a { 
+	display: block;
+	border: 1px inset silver ; 
+	color: grey; 
+	background-color: lightgrey; 
+	text-decoration:none;
+	padding: 5px 10px; 
+}
+#schema * a:hover {
+	border: 1px outset silver ; 
+	color: black; 
+}
+#schema ul li a {
+	font-weight: bold;
+}
+#schema ul li ul li a {
+	font-weight: normal;
+}
+#schema ul li ul {
+	display: none;
+}
+#schema ul li:hover ul {
+	display: block;
+}

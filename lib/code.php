@@ -1,6 +1,7 @@
 <?php
 
-	require "persistance.php";
+	require_once "persistance.php";
+	require_once "database.php";
 
 	class SqlCode implements sql, persistance
 	{
@@ -108,5 +109,16 @@
 			$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			$result = $db->query($this->code);
 			return $result;
+		}
+
+		function extractColumns()
+		{
+			eregi('create +table +[^(]+\(([^)]+)', $this->code, $strings);
+			$columns = split(',', $strings[1]);
+			for ($i=0; $i < count($columns); $i++) {
+				$c = new Column(firstWord($columns[$i]));
+				$columns[$i] = $c; 
+			}
+			return $columns;
 		}
 	}

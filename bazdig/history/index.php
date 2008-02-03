@@ -16,11 +16,16 @@
 	}
 ?>
 <link rel="stylesheet" type="text/css" href="../bazdig.css" />
-<p><a href="../console/" accesskey="c" title="(c)" class="button">console</a><a href="../bazdig.db" accesskey="s" title="(s)" class="button">save</a></p>
+<div id="nav"><a href="../console/" accesskey="c" title="(c)" class="button">console</a><a href="../bazdig.db" accesskey="s" title="(s)" class="button">save</a></div>
+<div id="history">
 <form method="get" action=".">
 <input type="text" name="q" value="<?php echo $_GET['q'] ?>"/><input type="submit" />
 </form>
+<div id="queries">
 <?php
 	foreach ($queries as $q) {
-		echo '<a class="query" href="'. $console->get_url() .'?q='. $q->code .'" >'. $q->code .'</a>';
+		echo '<a href="'. $console->get_url() .'?q='. $q->code .'" >'. $q->code .'</a>';
 	}
+?>
+</div>
+</div>

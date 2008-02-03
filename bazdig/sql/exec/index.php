@@ -4,14 +4,22 @@
     define('WARAQ_ROOT', '../../..');
     require_once WARAQ_ROOT .'/'. 'ini.php';
 
-	if (!$_SESSION['db']) {
-		header('Location: '. $bazdig->get('/db')->url );
-	}
-
 	require "code.php";
 
+	if ($_GET['dbt']) {
+		$_SESSION['db_type'] = $_GET['dbt'];
+		$_SESSION['db_name'] = $_GET['dbn'];
+		$_SESSION['db_host'] = $_GET['dbh'];
+		$_SESSION['db_user'] = $_GET['dbu'];
+		$_SESSION['db_password'] = $_GET['dbp'];
+	}
+
+	if (!$_SESSION['db_type'] or !$_GET['q']) {
+		header('Location: '. $bazdig->get('/console')->url );
+	}
+
 	$history_db = new PDO("sqlite:". $bazdig->getparam('db')->file);
-	$work_db = new PDO($_SESSION['db'], $_SESSION['db_user'], $_SESSION['db_password']);
+	$work_db = new BDB(array('type' => $_SESSION['db_type'], 'name' => $_SESSION['db_name'], 'host' => $_SESSION['db_host']), $_SESSION['db_user'], $_SESSION['db_password']);
 
 	SqlCode::set_db($history_db);
 	$query = new SqlCode(stripslashes($_GET['q']));

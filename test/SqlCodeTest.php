@@ -18,6 +18,7 @@ class SqlCodeTest extends UnitTestCase {
 		$this->sqlCode2->date = '2008-01-25';
 		$this->markkitDB =& new PDO("sqlite2:markkit-test.db");
 		$this->markkitQuery3 = new SqlCode("select * from marks where pageUrl like '%x'");
+		$this->markkitQuery4 = new SqlCode("create table marks (pageUrl, text)");
     }
 
     function tearDown()
@@ -28,6 +29,20 @@ class SqlCodeTest extends UnitTestCase {
 		$id = $this->markkitQuery3->id;
 		$this->db->exec("delete from $tableName where id='$id'");
     }
+
+	function test_extractColumns()
+	{
+		$result = firstWord('  test  test2 test3 ');
+		$expected = 'test';
+		$this->assertEqual($expected, $result);
+		$result = firstWord('test');
+		$this->assertEqual($expected, $result);
+		$result = $this->markkitQuery4->extractColumns();
+		$expected = 2;
+		$this->assertEqual($expected, count($result));
+		$expected = array(new Column('pageUrl'), new Column('text'));
+		$this->assertEqual($expected, $result);
+	}
 
 	function test_search()
 	{

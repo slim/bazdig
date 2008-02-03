@@ -2,8 +2,48 @@
 	define('WARAQ_ROOT', '..');
 	require_once WARAQ_ROOT .'/ini.php';
 
+	require_once "code.php";
+
 	class BDB extends PDO
 	{
+		var $type, $name, $host, $user, $password;
+
+		function __construct($dsn, $username = NULL, $password = NULL)
+		{
+			$this->user 	= $username;
+			$this->password = $password;
+			if (is_array($dsn)) {
+				$dbconfig = $dsn;
+				$this->type 	= $dbconfig['type'];
+				$this->name 	= $dbconfig['name'];
+				$this->host 	= $dbconfig['host'];
+				$dsn = $this->getDsn();
+			}
+			parent::__construct($dsn,$username, $password);
+		}
+
+		function getDsn()
+		{
+			$dsn = $this->type .':';
+			if ("sqlite" == $this->type or "sqlite2" == $this->type) {
+				$dsn .= $this->name; 
+			} else {
+				$dsn .= 'host='. $this->host;
+				$dsn .= ';dbname='. $this->name;
+			}
+			return $dsn;
+		}
+
+		function httpGet($localResource)
+		{
+			$queryString  = "dbt=". $this->type;
+			$queryString .= "&dbn=". $this->name;
+			$queryString .= "&dbh=". $this->host;
+			$queryString .= "&dbu=". $this->user;
+			$queryString .= "&dbp=". $this->password;
+			return file_get_contents($localResource->url .'?'. $queryString);
+		}
+
 		function listTables()
 		{
 			$dbType = $this->getAttribute(PDO::ATTR_DRIVER_NAME);
@@ -15,7 +55,7 @@
 			$result = $this->query($query);
 			$tables = array();
 			foreach ($result as $r) {
-				$tables []= new Table($r['name']);
+				$tables []= new Table($r[0]);
 			}
 
 			return $tables;
@@ -35,17 +75,23 @@
 
 		function loadColumns($db)
 		{
+			$this->columns = array();
 			$table = $this->name;
 			$dbType = $db->getAttribute(PDO::ATTR_DRIVER_NAME);
 			if ('sqlite' == $dbType || 'sqlite2' == $dbType) {
-				$result = $db->fetchColumnTypes($table);
-				foreach ($result as $column => $type) {
-					$this->columns []= new Column($column, $type);
-				}
+				$query = "select sql from sqlite_master where type='table' and name='$table'";
+				$row = $db->query($query)->fetch();
+				$createQuery = new SqlCode($row['sql']);
+				$this->columns = $createQuery->extractColumns();
 			} else {
-				$columns = $db->query("show columns from $table");
+				$query = "show columns from $table";
+				$result = $db->query($query);
+				foreach ($result as $column) {
+					$this->columns []= new Column($column['Field'], $column['Type']);
+				}
 			}
-			
+
+			return $this->columns;
 		}
 	}
 
