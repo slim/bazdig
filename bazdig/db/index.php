@@ -1,5 +1,7 @@
+<title>bazdig database settings</title>
 <link rel="stylesheet" type="text/css" href="../bazdig.css" />
-<form id="database" method='get' action='./set/' >
+<div id="nav"><a href="../console/" accesskey="c" title="(c)" class="button">console</a></div>
+<form id="settings" method='get' action='./set/' >
 <label>Type <input type='text' name='dbt' /></label>
 <label>Name <input type='text' name='dbn' /></label>
 <label>Host <input type='text' name='dbh' /></label>

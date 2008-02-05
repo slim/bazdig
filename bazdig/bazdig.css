@@ -4,6 +4,9 @@ body {
 	color: #000000;
 	margin: 1em 0 0 1em;
 }
+h3 {
+	display: inline;
+}
 #nav a { 
 	border: 1px outset silver ; 
 	padding: 5px 10px; 
@@ -11,12 +14,14 @@ body {
 	background-color: lightgrey; 
 	text-decoration:none
 }
-#settings { 
-	text-align: right;
-	padding: 10px;
-	width: 400px;
+#settings {
+	margin: 30px 30px;
 }
 #settings label {
+	display: block;
+	margin-top: 10px;
+}
+#settings * input { 
 	display: block;
 }
 #settings * input:focus { 
@@ -32,16 +37,19 @@ body {
 	background-color: yellow; 
 }
 #ok { 
-	display: block; 
-	clear:both; 
 	width: 100% 
 }
-table tr td { 
-	vertical-align: top; 
+#history {
+	margin-top: 10px;
 }
 #console {
+	margin-top: 10px;
 	float: left;
 	width: 70%
+}
+#schema {
+	width: 30%;
+	margin-left: 70%;
 }
 #schema ul { 
 	list-style-type: none;
@@ -51,20 +59,19 @@ table tr td {
 #schema * a { 
 	display: block;
 	border: 1px inset silver ; 
-	color: grey; 
 	background-color: lightgrey; 
 	text-decoration:none;
 	padding: 5px 10px; 
 }
 #schema * a:hover {
 	border: 1px outset silver ; 
-	color: black; 
 }
 #schema ul li a {
 	font-weight: bold;
 }
 #schema ul li ul li a {
 	font-weight: normal;
+	color: black; 
 }
 #schema ul li ul {
 	display: none;

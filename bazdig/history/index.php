@@ -15,6 +15,7 @@
 		$queries = SqlCode::select('order by date desc limit 10');	
 	}
 ?>
+<title>bazdig history</title>
 <link rel="stylesheet" type="text/css" href="../bazdig.css" />
 <div id="nav"><a href="../console/" accesskey="c" title="(c)" class="button">console</a><a href="../bazdig.db" accesskey="s" title="(s)" class="button">save</a></div>
 <div id="history">
@@ -24,7 +25,7 @@
 <div id="queries">
 <?php
 	foreach ($queries as $q) {
-		echo '<a href="'. $console->get_url() .'?q='. $q->code .'" >'. $q->code .'</a>';
+		echo '<a href="'. $console->get_url() .'?q='. rawurlencode($q->code) .'" ><pre>'. $q->code .'</pre></a>';
 	}
 ?>
 </div>
