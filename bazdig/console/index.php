@@ -18,7 +18,12 @@
 <link rel="stylesheet" type="text/css" href="../bazdig.css" />
 </head>
 <body>
-
+<?php
+	$bazdig_db = $bazdig->getparam('db')->file; 
+	if (!is_writable($bazdig_db)) {
+		echo '<div id="error"><b>WARNING</b> your history database is not writeable. <code>chmod 777 '. $bazdig->file .' && chmod 666 '. $bazdig_db .'</code></div>'; 
+	}
+?>
 <div id="nav">
 	<a href="../history/" accesskey="h" title="(h)">history</a><a href="../db/" accesskey="d" title="(d)">database</a>
 </div>

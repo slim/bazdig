@@ -7,6 +7,12 @@ body {
 h3 {
 	display: inline;
 }
+#error {
+	background-color: yellow;
+	border: 2px solid red;
+	padding: 10px;
+	margin: 10px;
+}
 #nav a { 
 	border: 1px outset silver ; 
 	padding: 5px 10px; 

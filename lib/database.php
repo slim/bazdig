@@ -107,3 +107,10 @@
 			$this->type = $type;
 		}
 	}
+
+
+function columnNames($row)
+{
+	return array_keys($row);
+}
+
