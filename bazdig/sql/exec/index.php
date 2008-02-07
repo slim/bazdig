@@ -44,17 +44,21 @@
 <body>
 <table>
 <?php
-	echo "<tr>";
-	foreach ($columns as $c) {
-		echo "<th>$c</th>";
-	}
-	echo "</tr>";
-	foreach ($rows as $r) {
+	if (count($rows) < 1) {
+		echo "<tr><th>Empty</th></tr>";
+	} else {
 		echo "<tr>";
-		foreach ($r as $value) {
-			echo "<td>$value</td>";
+		foreach ($columns as $c) {
+			echo "<th>$c</th>";
 		}
 		echo "</tr>";
+		foreach ($rows as $r) {
+			echo "<tr>";
+			foreach ($r as $value) {
+				echo "<td>$value</td>";
+			}
+			echo "</tr>";
+		}
 	}
 ?>
 </table>
