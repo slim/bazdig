@@ -23,15 +23,6 @@
 
 	SqlCode::set_db($history_db);
 	$query = new SqlCode(stripslashes($_GET['q']));
-	try {
-		$result = $query->exec($work_db);
-	} catch (Exception $e) { 
-		die("ERREUR SQL:". $e->getMessage());
-	}
-
-	$query->save();
-	$rows = $result->fetchAll(PDO::FETCH_ASSOC);
-	$columns = columnNames($rows[0]);
 ?>
 <html>
 <head>
@@ -39,28 +30,47 @@
 <style type="text/css">
 	table tr td {border: solid 1px silver; padding: 10px}
 	table tr th {border: solid 1px grey; padding: 10px}
+	#error {
+		background-color: yellow;
+		border: 2px solid red;
+		padding: 10px;
+		margin: 10px;
+	}
 </style>
 </head>
 <body>
-<table>
 <?php
-	if (count($rows) < 1) {
-		echo "<tr><th>Empty</th></tr>";
-	} else {
+	try {
+		$result = $query->exec($work_db);
+	} catch (Exception $e) { 
+		die("<div id='error'><b>SQL ERROR</b> ". $e->getMessage() ."</div>");
+	}
+
+	$query->save();
+
+	try {
+		$rows = $result->fetchAll(PDO::FETCH_ASSOC);
+		if (count($rows) < 1) {
+			die("<table><tr><th>Empty</th></tr></table>");
+		}
+	} catch (Exception $e) { 
+		die("<table><tr><th>Empty</th></tr></table>");
+	}
+	$columns = columnNames($rows[0]);
+
+	echo "<table><tr>";
+	foreach ($columns as $c) {
+		echo "<th>$c</th>";
+	}
+	echo "</tr>";
+	foreach ($rows as $r) {
 		echo "<tr>";
-		foreach ($columns as $c) {
-			echo "<th>$c</th>";
+		foreach ($r as $value) {
+			echo "<td>$value</td>";
 		}
 		echo "</tr>";
-		foreach ($rows as $r) {
-			echo "<tr>";
-			foreach ($r as $value) {
-				echo "<td>$value</td>";
-			}
-			echo "</tr>";
-		}
 	}
+	echo "</table>";
 ?>
-</table>
 </body>
 </html>
