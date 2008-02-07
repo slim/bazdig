@@ -26,7 +26,6 @@
 ?>
 <html>
 <head>
-<title><?php echo join($columns, ' '); ?></title>
 <style type="text/css">
 	table tr td {border: solid 1px silver; padding: 10px}
 	table tr th {border: solid 1px grey; padding: 10px}
@@ -37,8 +36,6 @@
 		margin: 10px;
 	}
 </style>
-</head>
-<body>
 <?php
 	try {
 		$result = $query->exec($work_db);
@@ -58,6 +55,11 @@
 	}
 	$columns = columnNames($rows[0]);
 
+?>
+<title><?php echo join($columns, ' '); ?></title>
+</head>
+<body>
+<?php
 	echo "<table><tr>";
 	foreach ($columns as $c) {
 		echo "<th>$c</th>";
