@@ -5,9 +5,9 @@
 
 	require "code.php";
 
-	$dbFile = $bazdig->get("/bazdig.db");
+	$dbFile = $bazdig->getparam("db")->file;
 	$console = $bazdig->get("/console");
-	SqlCode::set_db("sqlite:". $dbFile->get_file());
+	SqlCode::set_db("sqlite:". $dbFile);
 
 	if ($_GET['q']) {
 		$queries = SqlCode::search($_GET['q']);

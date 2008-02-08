@@ -6,19 +6,20 @@
 
 		function __construct($url, $file)
 		{
-			$this->url = $url;
-			$this->file = $file;
-		}
-
-		function LocalResource($url, $file)
-		{
-			$this->__construct($url, $file);
+			$this->url = absolutize($url);
+			$this->file = absolutize($file);
 		}
 
 		function get($path)
 		{
-			$u = absolutize($this->url .'/'. $path);
-			$f = absolutize($this->file .'/'. $path);
+			$f = $this->file .'/'. $path;
+			if (strpos($this->url, '?')) {
+				$u = str_replace('?', "/$path?", $this->url	);
+			} else if (strpos($this->url, '#')) {
+				$u = str_replace('#', "/$path#", $this->url	);
+			} else {
+				$u = $this->url .'/'. $path;
+			}
 			$r = new LocalResource($u, $f);
 			return $r;
 		}
@@ -37,10 +38,7 @@
 	function absolutize($path)
 	{
 		$path = ereg_replace('/\./', '/', $path);
-		while (ereg('/[^/.]+/\.\./', $path)) {
-			$path = ereg_replace('/[^/.]+/\.\./', '/', $path);
-		}
+		$path = ereg_replace('/[^/.]+/+\.\./', '/', $path);
 
 		return $path;
 	}
-?>

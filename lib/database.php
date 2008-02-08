@@ -84,7 +84,7 @@
 				$createQuery = new SqlCode($row['sql']);
 				$this->columns = $createQuery->extractColumns();
 			} else {
-				$query = "show columns from `$table`";
+				$query = "show columns from $table";
 				$result = $db->query($query);
 				foreach ($result as $column) {
 					$this->columns []= new Column($column['Field'], $column['Type']);
@@ -107,3 +107,10 @@
 			$this->type = $type;
 		}
 	}
+
+function columnNames($row)
+	$names = array();
+	if (is_array($row)) $names = array_keys($row);
+	return $names;
+}
+
