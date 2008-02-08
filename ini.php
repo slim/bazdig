@@ -16,6 +16,7 @@
 	$bazdig->setparam("db", $bazdig->get('bazdig.db'));
 
 function firstWord($string)
+{
 	$string = trim($string);
 	return str_trunkate($string, ' ');
 }

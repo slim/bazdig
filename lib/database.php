@@ -109,6 +109,7 @@
 	}
 
 function columnNames($row)
+{
 	$names = array();
 	if (is_array($row)) $names = array_keys($row);
 	return $names;
