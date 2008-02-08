@@ -20,7 +20,7 @@
 <div id="nav"><a href="../console/" accesskey="c" title="(c)" class="button">console</a><a href="../bazdig.db" accesskey="s" title="(s)" class="button">save</a></div>
 <div id="history">
 <form method="get" action=".">
-<input type="text" name="q" value="<?php echo $_GET['q'] ?>"/><input type="submit" />
+<input type="text" name="q" value="<?php echo $_GET['q'] ?>"/><input type="submit" value="Search" />
 </form>
 <div id="queries">
 <?php
