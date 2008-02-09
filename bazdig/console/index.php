@@ -1,4 +1,8 @@
 <?php
+	if ( "5" > phpversion()) {
+		$error = "<b>ERROR</b> Bazdig works only with PHP5. sorry.";
+		die("<div style='background-color: yellow; border: 2px solid red; padding: 10px; margin: 10px;'>$error</div>");
+	}
 	session_start();
 	
     define('WARAQ_ROOT', '../..');
@@ -10,6 +14,19 @@
 		header('Location: '. $bazdig->get('/db')->url );
 	}
 
+	$bazdig_db = $bazdig->getparam('db')->file; 
+	if (!is_writable($bazdig_db)) {
+		$error = "<b>WARNING</b> your history database is not writeable. <code>chmod 777 ". $bazdig->file ." && chmod 666 $bazdig_db</code></div>"; 
+		echo "<div style='background-color: yellow; border: 2px solid red; padding: 10px; margin: 10px;'>$error</div>";
+	}
+
+	try {
+		$work_db = new BDB(array('type' => $_SESSION['db_type'], 'name' => $_SESSION['db_name'], 'host' => $_SESSION['db_host']), $_SESSION['db_user'], $_SESSION['db_password']);
+	} catch (Exception $e) { 
+		$error = "<b>ERROR</b> check that the PDO_SQLITE and PDO_MYSQL modules are installed"; 
+		die("<div style='background-color: yellow; border: 2px solid red; padding: 10px; margin: 10px;'>$error</div>");
+	}
+
 ?>
 <html>
 <head>
@@ -18,12 +35,6 @@
 <link rel="stylesheet" type="text/css" href="../bazdig.css" />
 </head>
 <body>
-<?php
-	$bazdig_db = $bazdig->getparam('db')->file; 
-	if (!is_writable($bazdig_db)) {
-		echo '<div id="error"><b>WARNING</b> your history database is not writeable. <code>chmod 777 '. $bazdig->file .' && chmod 666 '. $bazdig_db .'</code></div>'; 
-	}
-?>
 <div id="nav">
 	<a href="../history/" accesskey="h" title="(h)">history</a><a href="../db/" accesskey="d" title="(d)">database</a>
 </div>
@@ -37,10 +48,8 @@
 	<button id="ok" accesskey="k" title="(k)" onclick="q.value=input.getCode(); submit();">OK</button>
 	<input type="hidden" name="q" id="q"/>
 </div>
-<div id="schema"><?php 
-
-if ($_SESSION['db_type']) {
-	$work_db = new BDB(array('type' => $_SESSION['db_type'], 'name' => $_SESSION['db_name'], 'host' => $_SESSION['db_host']), $_SESSION['db_user'], $_SESSION['db_password']);
+<div id="schema">
+<?php 
 	$dbName 	= $work_db->name;
 	$dbLocation = $work_db->host;
 	if ($work_db->type == 'sqlite' || $work_db->type == 'sqlite2') {
@@ -50,8 +59,6 @@ if ($_SESSION['db_type']) {
 	echo "<h3>".$dbName."</h3>";
 	echo " @". $dbLocation; 
 	echo $work_db->httpGet($bazdig->get('/db/schema/')); 
-} 
-
 ?>
 </div>
 
