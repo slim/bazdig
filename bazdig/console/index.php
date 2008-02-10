@@ -50,15 +50,21 @@
 </div>
 <div id="schema">
 <?php 
-	$dbName 	= $work_db->name;
-	$dbLocation = $work_db->host;
-	if ($work_db->type == 'sqlite' || $work_db->type == 'sqlite2') {
-		$dbLocation = dirname($dbName);
-		$dbName 	= basename($dbName);
-	} 
-	echo "<h3>".$dbName."</h3>";
-	echo " @". $dbLocation; 
-	echo $work_db->httpGet($bazdig->get('/db/schema/')); 
+
+	if ($work_db->name) {
+		$dbName 	= $work_db->name;
+		$dbLocation = $work_db->host;
+		if ($work_db->type == 'sqlite' || $work_db->type == 'sqlite2') {
+			$dbLocation = dirname($dbName);
+			$dbName 	= basename($dbName);
+		} 
+		echo "<h3>".$dbName."</h3>";
+		echo " @". $dbLocation; 
+		echo $work_db->httpGet($bazdig->get('/db/schema/')); 
+	} else {
+		$error = "<b>WARNING</b> you have not selected a database";
+		echo "<div style='background-color: yellow; border: 2px solid red; padding: 10px; margin: 10px;'>$error</div>";
+	}
 ?>
 </div>
 
