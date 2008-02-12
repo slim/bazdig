@@ -5,5 +5,5 @@
 b {color:blue;font-style:normal;} /* reserved words */
 u {color:blue;font-style:normal;} /* types */
 a {color:fuchsia;font-style:normal;} /* commands */
-i, i b, i u, i a, i s  {color:silver;font-weight:normal;font-style:italic;} /* comments */
-s, s b, s u, s a, s i {color:#2A00FF;font-weight:normal;} /* strings */
+i, i b, i u, i a, i s  {color:silver;font-weight:normal;font-style:italic;text-decoration:none;} /* comments */
+s, s b, s u, s a, s i {color:#2A00FF;font-weight:normal;text-decoration:none;} /* strings */

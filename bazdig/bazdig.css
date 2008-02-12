@@ -33,13 +33,13 @@ h3 {
 #settings * input:focus { 
 	background: yellow;
 }
-#queries a { 
+#queries pre { 
 	display: block; 
 	padding: 10px; 
 	text-decoration: none; 
 	color: black 
 }
-#queries a:hover { 
+#queries pre:hover { 
 	background-color: yellow; 
 }
 #ok { 
