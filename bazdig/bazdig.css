@@ -42,6 +42,11 @@ h3 {
 #queries pre:hover { 
 	background-color: yellow; 
 }
+#queries i {
+	color: black;
+	font-weight: bold;
+	font-style: normal;
+}
 #ok { 
 	width: 100% 
 }
