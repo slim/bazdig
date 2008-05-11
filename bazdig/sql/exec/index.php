@@ -54,9 +54,10 @@
 		die("<table><tr><th>Empty</th></tr></table>");
 	}
 	$columns = columnNames($rows[0]);
+	$title = $query->get_title() ? $query->get_title() : join($columns, ' ');
 
 ?>
-<title><?php echo join($columns, ' '); ?></title>
+<title><?php echo $title; ?></title>
 </head>
 <body>
 <?php

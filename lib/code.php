@@ -17,6 +17,14 @@
 			$this->id = 'md5:'. md5($this->code);
 		}
 
+		function get_title()
+		{
+			if (!preg_match('/\-\-([^\n]*\n)/', $this->code, $comments)) {
+				return false;
+			}
+			return trim($comments[1]);
+		}
+
 		public static function get_table_name()
 		{
 			return "sql";
