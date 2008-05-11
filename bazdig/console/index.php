@@ -23,7 +23,7 @@
 	try {
 		$work_db = new BDB(array('type' => $_SESSION['db_type'], 'name' => $_SESSION['db_name'], 'host' => $_SESSION['db_host']), $_SESSION['db_user'], $_SESSION['db_password']);
 	} catch (Exception $e) { 
-		$error = "<b>ERROR</b> check that the PDO_SQLITE and PDO_MYSQL modules are installed"; 
+		$error = "<b>ERROR</b> check your server permissions then check that the PDO_SQLITE and PDO_MYSQL modules are installed"; 
 		die("<div style='background-color: yellow; border: 2px solid red; padding: 10px; margin: 10px;'>$error</div>");
 	}
 
@@ -60,7 +60,12 @@
 		} 
 		echo "<h3>".$dbName."</h3>";
 		echo " @". $dbLocation; 
-		echo $work_db->httpGet($bazdig->get('/db/schema/')); 
+		try {
+			echo $work_db->httpGet($bazdig->get('/db/schema/')); 
+		} catch (Exception $e) { 
+			$error = "<b>ERROR</b>". $e->getMessage(); 
+			echo("<div style='background-color: yellow; border: 2px solid red; padding: 10px; margin: 10px;'>$error</div>");
+		}
 	} else {
 		$error = "<b>WARNING</b> you have not selected a database";
 		echo "<div style='background-color: yellow; border: 2px solid red; padding: 10px; margin: 10px;'>$error</div>";
