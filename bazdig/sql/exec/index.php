@@ -18,10 +18,15 @@
 		header('Location: '. $bazdig->get('/console')->url );
 	}
 
-	$history_db = new PDO("sqlite:". $bazdig->getparam('db')->file);
-	$work_db = new BDB(array('type' => $_SESSION['db_type'], 'name' => $_SESSION['db_name'], 'host' => $_SESSION['db_host']), $_SESSION['db_user'], $_SESSION['db_password']);
+	try {
+		$history_db = new PDO("sqlite:". $bazdig->getparam('db')->file);
+		$work_db = new BDB(array('type' => $_SESSION['db_type'], 'name' => $_SESSION['db_name'], 'host' => $_SESSION['db_host']), $_SESSION['db_user'], $_SESSION['db_password']);
+		SqlCode::set_db($history_db);
+	} catch (Exception $e) {
+		$error = "<b>DATABASE ERROR</b> check you have PDO_SQLITE <sub>(". $e->getMessage() .")</sub>";
+		die("<div style='background-color: yellow; border: 2px solid red; padding: 10px; margin: 10px;'>$error</div>");
+	}
 
-	SqlCode::set_db($history_db);
 	$query = new SqlCode(stripslashes($_GET['q']));
 ?>
 <html>
@@ -40,7 +45,8 @@
 	try {
 		$result = $query->exec($work_db);
 	} catch (Exception $e) { 
-		die("<div id='error'><b>SQL ERROR</b> ". $e->getMessage() ."</div>");
+		$error = "<b>SQL ERROR</b> ". $e->getMessage() ;
+		die("<div style='background-color: yellow; border: 2px solid red; padding: 10px; margin: 10px;'>$error</div>");
 	}
 
 	$query->save();

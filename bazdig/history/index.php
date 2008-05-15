@@ -7,7 +7,12 @@
 
 	$dbFile = $bazdig->getparam("db")->file;
 	$console = $bazdig->get("/console");
-	SqlCode::set_db("sqlite:". $dbFile);
+	try {
+		SqlCode::set_db("sqlite:". $dbFile);
+	} catch (Exception $e) {
+		$error = "<b>DATABASE ERROR</b> check you have PDO_SQLITE <sub>(". $e->getMessage() .")</sub>";
+		die("<div style='background-color: yellow; border: 2px solid red; padding: 10px; margin: 10px;'>$error</div>");
+	}
 
 	if ($_GET['q']) {
 		$queries = SqlCode::search($_GET['q']);
