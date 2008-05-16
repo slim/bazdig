@@ -1,9 +1,4 @@
 <?php
-	define('WARAQ_ROOT', '..');
-	require_once WARAQ_ROOT .'/ini.php';
-
-	require_once "code.php";
-
 	class BDB extends PDO
 	{
 		var $type, $name, $host, $user, $password;
