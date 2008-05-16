@@ -39,7 +39,7 @@
 	<a href="../history/" accesskey="h" title="(h)">history</a><a href="../db/" accesskey="d" title="(d)">database</a>
 </div>
 
-<form method="get" action="../sql/exec/" target="_new">
+<form method="get" action="../sql/exec/" target="_blank" >
 
 <div id="console">
 	<textarea id="input" name="input" class="codepress sql linenumbers-off" style="width:100%;height:350px;" wrap="off" tabindex="1">
