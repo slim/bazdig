@@ -23,11 +23,11 @@
 		$work_db = new BDB(array('type' => $_SESSION['db_type'], 'name' => $_SESSION['db_name'], 'host' => $_SESSION['db_host']), $_SESSION['db_user'], $_SESSION['db_password']);
 		SqlCode::set_db($history_db);
 	} catch (Exception $e) {
-		$error = "<b>DATABASE ERROR</b> check you have PDO_SQLITE <sub>(". $e->getMessage() .")</sub>";
+		$error = "<b>DATABASE ERROR</b> check you have PDO_SQLITE and PDO_MYSQL <sub>(". $e->getMessage() .")</sub>";
 		die("<div style='background-color: yellow; border: 2px solid red; padding: 10px; margin: 10px;'>$error</div>");
 	}
 
-	$query = new SqlCode(stripslashes($_GET['q']));
+	$query = new SqlCode(trim(stripslashes($_GET['q'])));
 ?>
 <html>
 <head>
