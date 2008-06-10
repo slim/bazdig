@@ -75,7 +75,7 @@
 	foreach ($rows as $r) {
 		echo "<tr>";
 		foreach ($r as $value) {
-			echo "<td>$value</td>";
+			echo "<td><pre>$value</pre></td>";
 		}
 		echo "</tr>";
 	}
