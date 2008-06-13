@@ -24,6 +24,15 @@
 			return $r;
 		}
 
+		function base()
+		{
+			$f = ereg_replace('/[^/]+$', '/', $this->file);
+			$u = ereg_replace('/[^/]+$', '/', $this->url);
+			$r = new LocalResource($u, $f);
+
+			return $r;
+		}
+
 		function get_file()
 		{
 			return $this->file;
@@ -37,8 +46,11 @@
 
 	function absolutize($path)
 	{
-		$path = ereg_replace('/\./', '/', $path);
-		$path = ereg_replace('/[^/.]+/+\.\./', '/', $path);
+		$path = ereg_replace('/\./', '/', $path); 
+		$path = ereg_replace('([^:])//+', '\1/', $path);
+		while (ereg('/[^/]+/+\.\./+', $path)) {
+			$path = ereg_replace('/[^/]+/+\.\./*', '/', $path);
+		}
 
 		return $path;
 	}

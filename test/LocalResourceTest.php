@@ -58,11 +58,28 @@ class LocalResourceTest extends PHPUnit_TestCase {
 		$result = absolutize("/xxx/YYY/../../zzz/./aaa");
 		$expected = "/zzz/aaa";
         $this->assertEquals($expected, $result);
+		$result = absolutize("/xxx/YYY/../../zzz/./aaa/..");
+		$expected = "/zzz/";
+        $this->assertEquals($expected, $result);
+	}
+
+	function test_base()
+	{
+        $result   = $this->LocalResource->base();
+        $expected = "http://localhost/warak/";
+        $this->assertEquals($expected, $result->url);
+        $expected = "/var/www/teh/warak/";
+        $this->assertEquals($expected, $result->file);
+		$result = $result->base();
+        $expected = "http://localhost/warak/";
+        $this->assertEquals($expected, $result->url);
+        $expected = "/var/www/teh/warak/";
+        $this->assertEquals($expected, $result->file);
 	}
 
 }
 // Running the test.
 $suite  = new PHPUnit_TestSuite('LocalResourceTest');
 $result = PHPUnit::run($suite);
-echo $result->toString();
+echo $result->toHtml();
 ?>
