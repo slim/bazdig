@@ -30,7 +30,7 @@
 ?>
 <html>
 <head>
-<title>bazdig</title>
+<title><?php echo $work_db->name .' @'. $work_db->host; ?> - bazdig</title>
 <script src="../codepress/codepress.js" type="text/javascript"></script>
 <link rel="stylesheet" type="text/css" href="../bazdig.css" />
 </head>
