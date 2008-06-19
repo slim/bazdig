@@ -13,15 +13,20 @@ h3 {
 	padding: 10px;
 	margin: 10px;
 }
+#nav {
+	position: fixed;
+	top: 10px;
+	left: 10px;
+}
 #nav a { 
 	border: 1px outset silver ; 
 	padding: 5px 10px; 
 	color: black; 
 	background-color: lightgrey; 
-	text-decoration:none
+	text-decoration:none;
 }
 #settings {
-	margin: 30px 30px;
+	margin: 50px 30px;
 }
 #settings label {
 	display: block;
@@ -51,12 +56,13 @@ h3 {
 	width: 100% 
 }
 #history {
-	margin-top: 10px;
+	margin-top: 50px;
 }
 #console {
-	margin-top: 10px;
-	float: left;
-	width: 70%
+	position: fixed;
+	top: 50px;
+	left: 10px;
+	width: 70%;
 }
 #schema {
 	width: 30%;
@@ -89,4 +95,7 @@ h3 {
 }
 #schema ul li:hover ul {
 	display: block;
+}
+#search {
+	display: inline;
 }

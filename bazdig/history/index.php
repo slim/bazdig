@@ -23,11 +23,12 @@
 <title>bazdig history</title>
 <link rel="stylesheet" type="text/css" href="../codepress/languages/sql.css" />
 <link rel="stylesheet" type="text/css" href="../bazdig.css" />
-<div id="nav"><a href="../console/" accesskey="c" title="(c)" class="button">console</a><a href="../bazdig.db" accesskey="s" title="(s)" class="button">save</a></div>
-<div id="history">
-<form method="get" action=".">
+<div id="nav"><a href="../console/" accesskey="c" title="(c)" class="button">console</a><a href="../bazdig.db" accesskey="s" title="(s)" class="button">save</a>
+<form id="search" method="get" action=".">
 <input type="text" name="q" value="<?php echo $_GET['q'] ?>"/><input type="submit" value="Search" />
 </form>
+</div>
+<div id="history">
 <div id="queries">
 <?php
 	foreach ($queries as $q) {
