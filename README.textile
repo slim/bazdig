@@ -1,0 +1,23 @@
+h1. bazdig
+
+PHP SQL console/editor
+
+
+h3. features
+
+
+* unlimited history
+* history search
+* syntax coloring
+* schema browser
+* save queries as links (CTRL-D in Firefox)
+* save reports as HTML files (CTRL-S in Firefox)
+* save ALL your query history as an sqlite database
+* works with MySQL and sqlite (for now)
+
+
+h3. install
+
+# check that you have PHP5, PDO_sqlite and PDO_mysql
+# uncompress the tarball in your HTTP server DocumentRoot
+# go to http://<domain>/bazdig
