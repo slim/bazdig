@@ -20,4 +20,4 @@ h3. install
 
 # check that you have PHP5, PDO_sqlite and PDO_mysql
 # uncompress the tarball in your HTTP server DocumentRoot
-# go to http://<domain>/bazdig
+# go to http://-yourdomain-/bazdig
