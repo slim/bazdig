@@ -6,21 +6,25 @@
 
 	require "code.php";
 
-	if ($_GET['dbt']) {
-		$_SESSION['db_type'] = $_GET['dbt'];
-		$_SESSION['db_name'] = $_GET['dbn'];
-		$_SESSION['db_host'] = $_GET['dbh'];
-		$_SESSION['db_user'] = $_GET['dbu'];
-		$_SESSION['db_password'] = $_GET['dbp'];
-	}
+	$db_type = $_GET['dbt'];
+	$db_name = $_GET['dbn'];
+	$db_host = $_GET['dbh'];
+  	if(!isset($_SERVER['PHP_AUTH_USER'])  ) {
+    	Header("WWW-Authenticate: Basic realm=\"$db_name@$db_host\"");
+    	Header("HTTP/1.0 401 Unauthorized");
+		$error = "<b>AUTHENTICATION ERROR</b> check your username and password ";
+		die("<div style='background-color: yellow; border: 2px solid red; padding: 10px; margin: 10px;'>$error</div>");
+  	}
+	$db_user = $_SERVER['PHP_AUTH_USER'];
+	$db_password = $_SERVER['PHP_AUTH_PW'];
 
-	if (!$_SESSION['db_type'] or !$_GET['q']) {
+	if (!$_GET['q']) {
 		header('Location: '. $bazdig->get('/console')->url );
 	}
 
 	try {
 		$history_db = new PDO("sqlite:". $bazdig->getparam('db')->file);
-		$work_db = new BDB(array('type' => $_SESSION['db_type'], 'name' => $_SESSION['db_name'], 'host' => $_SESSION['db_host']), $_SESSION['db_user'], $_SESSION['db_password']);
+		$work_db = new BDB(array('type' => $db_type, 'name' => $db_name, 'host' => $db_host), $db_user, $db_password);
 		SqlCode::set_db($history_db);
 	} catch (Exception $e) {
 		$error = "<b>DATABASE ERROR</b> check you have PDO_SQLITE and PDO_MYSQL <sub>(". $e->getMessage() .")</sub>";

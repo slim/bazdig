@@ -40,7 +40,9 @@
 </div>
 
 <form method="get" action="../sql/exec/" target="_blank" >
-
+<input type="hidden" name="dbt" value="<?php echo $_SESSION['db_type']; ?>"/>
+<input type="hidden" name="dbn" value="<?php echo $_SESSION['db_name']; ?>"/>
+<input type="hidden" name="dbh" value="<?php echo $_SESSION['db_host']; ?>"/>
 <div id="console">
 	<textarea id="input" name="input" class="codepress sql linenumbers-off" style="width:100%;height:350px;" wrap="off" tabindex="1">
 <?php echo stripslashes($_GET['q']); ?>
