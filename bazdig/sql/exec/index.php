@@ -36,6 +36,13 @@
 <html>
 <head>
 <style type="text/css">
+
+table, tr, td, th {
+       margin: 0px;
+       border-width: 0px;
+       border-spacing: 0px;
+       border-collapse: collapse;
+}
 	table tr td {border: solid 1px silver; padding: 10px}
 	table tr th {border: solid 1px grey; padding: 10px}
 	#error {
@@ -56,15 +63,19 @@
 	$query->save();
 
 	try {
-		$rows = $result->fetchAll(PDO::FETCH_ASSOC);
+		$rows = $result->fetchAll(PDO::FETCH_NUM);
 		if (count($rows) < 1) {
 			die("<table><tr><th>Empty</th></tr></table>");
 		}
 	} catch (Exception $e) { 
 		die("<table><tr><th>Empty</th></tr></table>");
 	}
-	$columns = columnNames($rows[0]);
 	$title = $query->get_title() ? $query->get_title() : join($columns, ' ');
+	$columns = array();
+	for ($i=0; $i < $result->columnCount(); $i++) {
+		$colMeta  = $result->getColumnMeta($i);
+		$columns[$i] = $colMeta['name'];
+	}
 
 ?>
 <title><?php echo $title; ?></title>
