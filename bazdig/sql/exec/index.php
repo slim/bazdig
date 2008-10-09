@@ -70,12 +70,12 @@ table, tr, td, th {
 	} catch (Exception $e) { 
 		die("<table><tr><th>Empty</th></tr></table>");
 	}
-	$title = $query->get_title() ? $query->get_title() : join($columns, ' ');
 	$columns = array();
 	for ($i=0; $i < $result->columnCount(); $i++) {
 		$colMeta  = $result->getColumnMeta($i);
 		$columns[$i] = $colMeta['name'];
 	}
+	$title = $query->get_title() ? $query->get_title() : join($columns, ' ');
 
 ?>
 <title><?php echo $title; ?></title>
