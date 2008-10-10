@@ -1,4 +1,5 @@
 <?php
+	session_set_cookie_params(3000000);
 	session_start();
 	
     define('WARAQ_ROOT', '../../..');
@@ -9,12 +10,6 @@
 	$db_type = $_GET['dbt'];
 	$db_name = $_GET['dbn'];
 	$db_host = $_GET['dbh'];
-  	if(!isset($_SERVER['PHP_AUTH_USER'])  ) {
-    	Header("WWW-Authenticate: Basic realm=\"$db_name@$db_host\"");
-    	Header("HTTP/1.0 401 Unauthorized");
-		$error = "<b>AUTHENTICATION ERROR</b> check your username and password ";
-		die("<div style='background-color: yellow; border: 2px solid red; padding: 10px; margin: 10px;'>$error</div>");
-  	}
 	$db_user = $_SERVER['PHP_AUTH_USER'];
 	$db_password = $_SERVER['PHP_AUTH_PW'];
 
@@ -27,7 +22,9 @@
 		$work_db = new BDB(array('type' => $db_type, 'name' => $db_name, 'host' => $db_host), $db_user, $db_password);
 		SqlCode::set_db($history_db);
 	} catch (Exception $e) {
-		$error = "<b>DATABASE ERROR</b> check you have PDO_SQLITE and PDO_MYSQL <sub>(". $e->getMessage() .")</sub>";
+    	Header("WWW-Authenticate: Basic realm=\"$db_name@$db_host\"");
+    	Header("HTTP/1.0 401 Unauthorized");
+		$error = "<b>CONNECTION ERROR</b> check your server permissions then check that the PDO_SQLITE and PDO_MYSQL modules are installed"; 
 		die("<div style='background-color: yellow; border: 2px solid red; padding: 10px; margin: 10px;'>$error</div>");
 	}
 

@@ -1,9 +1,11 @@
 <?php
+    session_set_cookie_params(3000000);
+	session_start();
+
 	if ( "5" > phpversion()) {
 		$error = "<b>ERROR</b> Bazdig works only with PHP5. sorry.";
 		die("<div style='background-color: yellow; border: 2px solid red; padding: 10px; margin: 10px;'>$error</div>");
 	}
-	session_start();
 	
     define('WARAQ_ROOT', '../..');
     require_once WARAQ_ROOT .'/'. 'ini.php';
@@ -14,17 +16,22 @@
 		header('Location: '. $bazdig->get('/db')->url );
 	}
 
+	$db_user = $_SERVER['PHP_AUTH_USER'];
+	$db_password = $_SERVER['PHP_AUTH_PW'];
+
+	try {
+		$work_db = new BDB(array('type' => $_SESSION['db_type'], 'name' => $_SESSION['db_name'], 'host' => $_SESSION['db_host']), $db_user, $db_password);
+	} catch (Exception $e) { 
+    	Header("WWW-Authenticate: Basic realm=\"$db_name@$db_host\"");
+    	Header("HTTP/1.0 401 Unauthorized");
+		$error = "<b>CONNECTION ERROR</b> check your server permissions then check that the PDO_SQLITE and PDO_MYSQL modules are installed"; 
+		die("<div style='background-color: yellow; border: 2px solid red; padding: 10px; margin: 10px;'>$error</div>");
+	}
+
 	$bazdig_db = $bazdig->getparam('db')->file; 
 	if (!is_writable($bazdig_db)) {
 		$error = "<b>WARNING</b> your history database is not writeable. <code>chmod 777 ". $bazdig->file ." && chmod 666 $bazdig_db</code></div>"; 
 		echo "<div style='background-color: yellow; border: 2px solid red; padding: 10px; margin: 10px;'>$error</div>";
-	}
-
-	try {
-		$work_db = new BDB(array('type' => $_SESSION['db_type'], 'name' => $_SESSION['db_name'], 'host' => $_SESSION['db_host']), $_SESSION['db_user'], $_SESSION['db_password']);
-	} catch (Exception $e) { 
-		$error = "<b>ERROR</b> check your server permissions then check that the PDO_SQLITE and PDO_MYSQL modules are installed"; 
-		die("<div style='background-color: yellow; border: 2px solid red; padding: 10px; margin: 10px;'>$error</div>");
 	}
 
 ?>
