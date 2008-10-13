@@ -25,7 +25,7 @@
 	} catch (Exception $e) { 
     	Header("WWW-Authenticate: Basic realm=\"$db_name@$db_host\"");
     	Header("HTTP/1.0 401 Unauthorized");
-		$error = "<b>CONNECTION ERROR</b> check your server permissions then check that the PDO_SQLITE and PDO_MYSQL modules are installed"; 
+		$error = "<b>CONNECTION ERROR</b> check your server permissions then check that the PDO_SQLITE and PDO_MYSQL modules are installed <sub>(<a href='../db/'>select another database</a>)</sub>"; 
 		die("<div style='background-color: yellow; border: 2px solid red; padding: 10px; margin: 10px;'>$error</div>");
 	}
 
