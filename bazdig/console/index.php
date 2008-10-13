@@ -14,6 +14,7 @@
 	
 	if (!$_SESSION['db_type']) {
 		header('Location: '. $bazdig->get('/db')->url );
+		die;
 	}
 
 	$db_user = $_SERVER['PHP_AUTH_USER'];
