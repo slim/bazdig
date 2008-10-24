@@ -1,4 +1,6 @@
 <?php
+require_once "code.php";
+
 	class BDB extends PDO
 	{
 		var $type, $name, $host, $user, $password;
