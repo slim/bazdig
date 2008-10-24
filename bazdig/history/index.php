@@ -26,13 +26,19 @@
 <div id="nav"><a href="../console/" accesskey="c" title="(c)" class="button">console</a><a href="../bazdig.db" accesskey="s" title="(s)" class="button">save</a>
 <form id="search" method="get" action=".">
 <input type="text" name="q" value="<?php echo $_GET['q'] ?>"/><input type="submit" value="Search" />
+<input type="hidden" name="f" value="7" />
 </form>
 </div>
 <div id="history">
 <div id="queries">
 <?php
+	$reference_query = "";
 	foreach ($queries as $q) {
+		$lev = levenshtein($reference_query, substr($q->code, 0, 255));
+		$qDiffRank = $lev ? strlen($q->code) / $lev : 10000;
+		if ($_GET['f'] && $qDiffRank > $_GET['f']) continue; 
 		echo '<pre onclick="document.location.href=\''. $console->get_url() .'?q='. rawurlencode($q->code) .'\'" >'. $q->toHTML().'</pre>';
+		$reference_query = substr($q->code, 0, 255);
 	}
 ?>
 </div>
