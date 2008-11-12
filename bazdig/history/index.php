@@ -15,7 +15,7 @@
 	}
 
 	if ($_GET['q']) {
-		$queries = SqlCode::search($_GET['q']);
+		$queries = SqlCode::search($_GET['q'], 'order by date desc');
 	} else {
 		$queries = SqlCode::select('order by date desc limit 10');	
 	}
