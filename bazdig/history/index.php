@@ -33,12 +33,20 @@
 <div id="queries">
 <?php
 	$reference_query = "";
+	$redundant_ignored = false;
 	foreach ($queries as $q) {
 		$lev = levenshtein($reference_query, substr($q->code, 0, 255));
 		$qDiffRank = $lev ? strlen($q->code) / $lev : 10000;
-		if ($_GET['f'] && $qDiffRank > $_GET['f']) continue; 
+		if ($_GET['f'] && $qDiffRank > $_GET['f']) {
+			$redundant_ignored = ture;
+			continue;
+		} 
 		echo '<pre onclick="document.location.href=\''. $console->get_url() .'?q='. rawurlencode($q->code) .'\'" >'. $q->toHTML().'</pre>';
 		$reference_query = substr($q->code, 0, 255);
+	}
+	if ($redundant_ignored) {
+		$unfiltered_request = "http://". $_SERVER['SERVER_NAME'] ."/". $_SERVER['SCRIPT_NAME'] ."?q=". $_GET['q'];
+		echo "<i><a href='$unfiltered_request'>Some queries were not displayed because I think they are redundant. Display them?</a></i>";
 	}
 ?>
 </div>
