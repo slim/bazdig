@@ -6,14 +6,14 @@
 	require_once "waraqservice.php";
 
 	$url  = "http://". $_SERVER['SERVER_NAME'] ."/". str_trunkate($_SERVER['REQUEST_URI'], '?');
-	$file = dirname($_SERVER['SCRIPT_FILENAME']);
+	$file = $_SERVER['SCRIPT_FILENAME'];
 
 	$requestedService = new LocalResource($url, $file);
-	$bazdigService = $requestedService->get(WARAQ_ROOT . '/bazdig');
+	$bazdigService = $requestedService->base()->get(WARAQ_ROOT . '/bazdig');
 
 	$GLOBALS['bazdig'] = new WaraqService($bazdigService->url, $bazdigService->file);
 	$bazdig =& $GLOBALS['bazdig'];
-	$bazdig->setparam("db", $bazdig->get('bazdig.db'));
+	$bazdig->setparam("db", $bazdig->get('/bazdig.db'));
 
 function firstWord($string)
 {
