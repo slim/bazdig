@@ -36,18 +36,27 @@
 
 table, tr, td, th {
        margin: 0px;
+	   padding: 5px;
        border-width: 0px;
        border-spacing: 0px;
        border-collapse: collapse;
+	   font-style: fixed;
+	   white-space: nowrap;
 }
-	table tr td {border: solid 1px silver; padding: 10px}
-	table tr th {border: solid 1px grey; padding: 10px}
-	#error {
-		background-color: yellow;
-		border: 2px solid red;
-		padding: 10px;
-		margin: 10px;
-	}
+table tr td {border: solid 1px silver;}
+table thead th {
+	border: solid 1px; 
+	border-color: ThreeDHighlight ThreeDShadow ThreeDShadow ThreeDHighlight;
+}
+thead {
+  background-color: ThreeDFace;
+}
+#error {
+	background-color: yellow;
+	border: 2px solid red;
+	padding: 10px;
+	margin: 10px;
+}
 </style>
 <?php
 	try {
@@ -79,15 +88,15 @@ table, tr, td, th {
 </head>
 <body>
 <?php
-	echo "<table><tr>";
+	echo "<table><thead>";
 	foreach ($columns as $c) {
 		echo "<th>$c</th>";
 	}
-	echo "</tr>";
+	echo "</thead>";
 	foreach ($rows as $r) {
 		echo "<tr>";
 		foreach ($r as $value) {
-			echo "<td><pre>$value</pre></td>";
+			echo "<td>$value</td>";
 		}
 		echo "</tr>";
 	}
