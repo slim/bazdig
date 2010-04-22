@@ -12,16 +12,19 @@
 
 	require_once "database.php";
 	
-	if (!$_SESSION['db_type']) {
+	$db_user     = $_SERVER['PHP_AUTH_USER'];
+	$db_password = $_SERVER['PHP_AUTH_PW'];
+	$db_type     = $_GET['dbt'] ? $_GET['dbt'] : $_SESSION['db_type'];
+	$db_name     = $_GET['dbn'] ? $_GET['dbn'] : $_SESSION['db_name'];
+	$db_host     = $_GET['dbh'] ? $_GET['dbh'] : $_SESSION['db_host'];
+
+	if (!$db_type) {
 		header('Location: '. $bazdig->get('/db')->url );
 		die;
 	}
 
-	$db_user = $_SERVER['PHP_AUTH_USER'];
-	$db_password = $_SERVER['PHP_AUTH_PW'];
-
 	try {
-		$work_db = new BDB(array('type' => $_SESSION['db_type'], 'name' => $_SESSION['db_name'], 'host' => $_SESSION['db_host']), $db_user, $db_password);
+		$work_db = new BDB(array('type' => $db_type, 'name' => $db_name, 'host' => $db_host), $db_user, $db_password);
 	} catch (Exception $e) { 
     	Header("WWW-Authenticate: Basic realm=\"$db_name@$db_host\"");
     	Header("HTTP/1.0 401 Unauthorized");
@@ -48,9 +51,9 @@
 </div>
 
 <form method="get" action="../sql/exec/" target="_blank" >
-<input type="hidden" name="dbt" value="<?php echo $_SESSION['db_type']; ?>"/>
-<input type="hidden" name="dbn" value="<?php echo $_SESSION['db_name']; ?>"/>
-<input type="hidden" name="dbh" value="<?php echo $_SESSION['db_host']; ?>"/>
+<input type="hidden" name="dbt" value="<?php echo $db_type ?>"/>
+<input type="hidden" name="dbn" value="<?php echo $db_name ?>"/>
+<input type="hidden" name="dbh" value="<?php echo $db_host ?>"/>
 <div id="console">
 	<textarea id="input" name="input" class="codepress sql linenumbers-off" style="width:100%;height:350px;" wrap="off" tabindex="1">
 <?php echo stripslashes($_GET['q']); ?>

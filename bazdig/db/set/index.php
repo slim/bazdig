@@ -14,4 +14,4 @@
 	$_SESSION['db_name'] 	 = $_GET['dbn'];
 	$_SESSION['db_host'] 	 = $_GET['dbh'];
 
-	header('Location: '. $bazdig->get('/console')->url );
+	header('Location: '. $bazdig->get('/console')->url .'?'. $_SERVER['QUERY_STRING'] );
