@@ -14,9 +14,9 @@
 	
 	$db_user     = $_SERVER['PHP_AUTH_USER'];
 	$db_password = $_SERVER['PHP_AUTH_PW'];
-	$db_type     = $_GET['dbt'] ? $_GET['dbt'] : $_SESSION['db_type'];
-	$db_name     = $_GET['dbn'] ? $_GET['dbn'] : $_SESSION['db_name'];
-	$db_host     = $_GET['dbh'] ? $_GET['dbh'] : $_SESSION['db_host'];
+	$db_type     = $_GET['dbt'] ? $_SESSION['db_type'] = $_GET['dbt'] : $_SESSION['db_type'];
+	$db_name     = $_GET['dbn'] ? $_SESSION['db_name'] = $_GET['dbn'] : $_SESSION['db_name'];
+	$db_host     = $_GET['dbh'] ? $_SESSION['db_host'] = $_GET['dbh'] : $_SESSION['db_host'];
 
 	if (!$db_type) {
 		header('Location: '. $bazdig->get('/db')->url );
