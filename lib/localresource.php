@@ -26,8 +26,8 @@
 
 		function base()
 		{
-			$f = ereg_replace('/[^/]+$', '/', $this->file);
-			$u = ereg_replace('/[^/]+$', '/', $this->url);
+			$f = preg_replace('/\/[^\/]+$/', '/', $this->file);
+			$u = preg_replace('/\/[^\/]+$/', '/', $this->url);
 			$r = new LocalResource($u, $f);
 
 			return $r;
@@ -46,10 +46,10 @@
 
 	function absolutize($path)
 	{
-		$path = ereg_replace('/\./', '/', $path); 
-		$path = ereg_replace('([^:])//+', '\1/', $path);
-		while (ereg('/[^/]+/+\.\./+', $path)) {
-			$path = ereg_replace('/[^/]+/+\.\./*', '/', $path);
+		$path = preg_replace('/\/\.\//', '/', $path); 
+		$path = preg_replace('/\/([^:])\/\/+/', '\1/', $path);
+		while (preg_match('/\/[^\/]+\/+\.\.\/+/', $path)) {
+			$path = preg_replace('/\/[^\/]+\/+\.\.\/*/', '/', $path);
 		}
 
 		return $path;

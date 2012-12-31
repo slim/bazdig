@@ -61,9 +61,9 @@
 				self::$db =& $db;
 			} else {
 				if (empty($user)) {
-					self::$db =& new PDO($db);
+					self::$db = new PDO($db);
 				} else {
-					self::$db =& new PDO($db, $user, $password);
+					self::$db = new PDO($db, $user, $password);
 				}
 			}
 			self::$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
